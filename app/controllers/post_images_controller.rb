@@ -1,8 +1,10 @@
 class PostImagesController < ApplicationController
+  # 新規作成表示アクション
   def new
     @post_image = PostImage.new
   end
 
+  # 投稿アクション
   def create
     @post_image = PostImage.new(post_image_params)
     @post_image.user_id = current_user.id
@@ -10,13 +12,25 @@ class PostImagesController < ApplicationController
     redirect_to post_images_path
   end
 
+  # 一覧表示アクション
   def index
+    @post_images = PostImage.all
   end
 
+  # 詳細表示アクション
   def show
+    @post_image = PostImage.find(params[:id])
   end
 
+  # 編集表示アクション
   def edit
+  end
+
+  # 投稿削除アクション
+  def destroy
+    @post_image = PostImage.find(params[:id])
+    @post_image.destroy
+    redirect_to post_images_path
   end
 
   # 投稿データのストロングパラメータ

@@ -7,4 +7,16 @@ class User < ApplicationRecord
   # PostImageモデルとのアソシエーション設定 1：N（useridの紐付け）
   has_many :post_images, dependent: :destroy
 
+  # ActiveStorageを使いプロフィール画像を保存できるように設定
+  has_one_attached :profile_image
+
+  # 画像が投稿されていない場合のエラー回避（画像サイズの変換処理）
+  def get_profile_image
+    unless profile_image.attached?
+      file_path = Rails.root.join('app/assets/images/sample-author1.jpg')
+      profile_image.attach(io: File.open(file_path), filename: 'default-image.jpg', oontent_type: 'image/jpeg')
+    end
+    profile_image.varian(resize_to_limit: [width, height]).processed
+  end
+
 end

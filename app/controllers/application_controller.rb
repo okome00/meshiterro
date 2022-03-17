@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   # サインイン後aboutページへ遷移する設定（devise用メソッド）
   def after_sign_in_path_for(resource)
-    about_path
+    post_images_path
   end
 
   # サインアウト後aboutページへ遷移する設定（devise用メソッド）
