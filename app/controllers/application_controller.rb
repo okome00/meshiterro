@@ -1,4 +1,7 @@
 class ApplicationController < ActionController::Base
+  # 権現設定 ログイン成功していない場合、ログイン画面へリダイレクトする
+  before_action :authenticate_user!, except: [:top]
+  
   before_action :configure_permitted_parameters, if: :devise_controller?
 
   # サインイン後aboutページへ遷移する設定（devise用メソッド）

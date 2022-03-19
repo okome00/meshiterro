@@ -8,18 +8,22 @@ class PostImagesController < ApplicationController
   def create
     @post_image = PostImage.new(post_image_params)
     @post_image.user_id = current_user.id
-    @post_image.save
-    redirect_to post_images_path
+    if @post_image.save
+      redirect_to post_images_path
+    else
+      render :new
+    end
   end
 
   # 一覧表示アクション
   def index
-    @post_images = PostImage.all
+    @post_images = PostImage.page(params[:page])
   end
 
   # 詳細表示アクション
   def show
     @post_image = PostImage.find(params[:id])
+    @post_comment = PostComment
   end
 
   # 編集表示アクション
@@ -33,7 +37,7 @@ class PostImagesController < ApplicationController
     redirect_to post_images_path
   end
 
-  # 投稿データのストロングパラメータ
+  # 画像投稿データのストロングパラメータ
   private
 
   def post_image_params

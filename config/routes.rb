@@ -6,7 +6,12 @@ Rails.application.routes.draw do
   devise_for :users
 
   # PostImageモデルのルーディング
-  resources :post_images, only: [:new, :create, :index, :show, :destroy]
+  resources :post_images, only: [:new, :create, :index, :show, :destroy] do
+    # PostCommentモデルのルーディング
+    resources :post_comments, only: [:create, :destroy]
+    # Favoriteモデルのルーディング
+    resource :favorites, only: [:create, :destroy]
+  end
   # usersコントローラーのルーディング
   resources :users, only: [:show, :edit, :update]
 

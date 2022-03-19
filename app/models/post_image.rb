@@ -1,11 +1,23 @@
 class PostImage < ApplicationRecord
-  # ActiveStorageの画像表示の宣言
-  has_one_attached :image
-
-  # Userモデルとのアソシエーション設定 N：1（useridの紐づけ）
+  # Userモデルとのアソシエーション設定 N：1（postimageidの紐付け）
   belongs_to :user
+  # PostCommentモデルとのアソシエーション設定 1：N（postimageidの紐付け）
+  has_many :post_comments, dependent: :destroy
+  # Fovoriteモデルとのアソシエーション設定 1：N（postimageidの紐付け）
+  has_many :favorites, dependent: :destroy
 
   # ActiveStorageを使い画像を投稿できるように設定
+  has_one_attached :image
+  
+  # バリデーション設定
+  validates :shop_name, presence: true
+  validates :image, presence: true
+
+  # 引数で渡されたユーザーidがFavoriteテーブル内に存在するかの確認
+  def favorited_by?(user)
+    favorites.exists?(user_id: user.id)
+  end
+
   # 画像が投稿されていない場合のエラー回避
   def get_image
     unless image.attached?
